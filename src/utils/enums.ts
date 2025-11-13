@@ -1,14 +1,14 @@
 // Enums for user gender
 export enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other',
+  Male = "male",
+  Female = "female",
+  Other = "other",
 }
 
 // Enums for user roles
 export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
+  ADMIN = "admin",
+  USER = "user",
 }
 
 // Enums for user Blood Group
@@ -20,11 +20,11 @@ export enum BloodGroup {
   AB_POS = "AB+",
   AB_NEG = "AB-",
   O_POS = "O+",
-  O_NEG = "O-"
+  O_NEG = "O-",
 }
 
 // Enums for user status
 export enum UserStatus {
-  Active = 'active',
-  Inactive = 'inactive',
+  Active = "active",
+  Inactive = "inactive",
 }

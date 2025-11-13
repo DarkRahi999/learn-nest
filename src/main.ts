@@ -3,6 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "@nestjs/common";
+import cookieParser from "cookie-parser";
 
 // Load environment variables
 dotenv.config();
@@ -14,6 +15,13 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     // CORS configuration
+    app.enableCors({
+      origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+      credentials: true,
+    });
+
+    // Cookie parser middleware
+    app.use(cookieParser());
 
     // Global prefix
     app.setGlobalPrefix("api");
