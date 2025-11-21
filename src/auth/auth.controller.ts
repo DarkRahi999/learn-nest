@@ -1,6 +1,8 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Request } from "@nestjs/common";
 import { CustomJwtService } from "../config/jwt/jwt.service";
 import { LoginDto } from "./dto/logIn.dto";
+import { RefreshTokenDto } from "./dto/refreshToken.dto";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -10,14 +12,17 @@ export class AuthController {
   @Post("login")
   async login(@Body() loginDto: LoginDto) {
     // Simple validation - in a real app, you'd check against a database
-    if (loginDto.email && loginDto.password) {
+    if (
+      loginDto.email === "admin@example.com" &&
+      loginDto.password === "admin123"
+    ) {
       const payload = {
         sub: 1,
         email: loginDto.email,
         role: "user",
       };
 
-      const accessToken = await this.jwtService.generateToken(payload);
+      const accessToken = await this.jwtService.generateToken(payload, '30d');
 
       return {
         accessToken,
@@ -29,5 +34,32 @@ export class AuthController {
     }
 
     return { error: "Invalid credentials" };
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+    try {
+      const payload = await this.jwtService.validateToken(refreshTokenDto.refreshToken);
+      
+      if (!payload) {
+        return { error: "Invalid refresh token" };
+      }
+      
+      const newAccessToken = await this.jwtService.generateToken(
+        {
+          sub: payload.sub,
+          email: payload.email,
+          role: payload.role,
+        }, 
+        '30d'
+      );
+      
+      return {
+        accessToken: newAccessToken,
+      };
+    } catch (error) {
+      return { error: "Invalid refresh token" };
+    }
   }
 }

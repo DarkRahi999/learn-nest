@@ -10,14 +10,14 @@ export default defineConfig({
     process.env.DATABASE_URL ||
     "postgresql://postgres:root@localhost:5432/learn",
   entities: [User, Table],
-  debug: false, // Disable debug logs
+  debug: false,
   allowGlobalContext: true,
   pool: {
     min: 2,
     max: 10,
   },
   seeder: {
-    path: "./src/config", // Path to the seeder files
+    path: "./src/config",
     defaultSeeder: "Seed", // Default seeder class name
   },
 });

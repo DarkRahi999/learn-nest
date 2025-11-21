@@ -33,16 +33,8 @@ async function bootstrap() {
       .setTitle("Learn Nest")
       .setDescription("API documentation for learn Nest")
       .setVersion("1.0")
-      .addBearerAuth(
-        {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-          name: "Authorization",
-          in: "header",
-        },
-        "JWT-auth"
-      )
+      .addBearerAuth()
+      .addGlobalResponse({ status: 401, description: 'Unauthorized - Please login' })
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

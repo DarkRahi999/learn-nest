@@ -23,8 +23,8 @@ export async function runSeeding(refresh = true) {
     // Connect to database silently
     orm = await MikroORM.init({
       ...mikroOrmConfig,
-      debug: false, // Disable query logging
-      logger: () => {}, // Disable all logging
+      debug: false,
+      logger: () => {},
     });
     console.log("✅ Database connection established");
 
